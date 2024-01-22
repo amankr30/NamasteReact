@@ -1,6 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 
+//core REACT
+
 // var heading = React.createElement(
 //   "h1",
 //   { id: "heading" },
@@ -9,27 +11,28 @@ import ReactDOM from "react-dom/client"
 
 // console.log(heading); //OBJECT
 
-// var root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(heading);
+// JSX is not react , similar to react with xml like syntax
+// JSX => react.createElement =>  react.createElement - JS object - HtmlElement(render)
 
-const parent = React.createElement(
-    "div",
-    {id:"parent"},[
-        React.createElement("div", { id: "firstChild" }, [
-            React.createElement("h2", {}, " h1 tag"),
-            React.createElement("h3", {}, " h2 tag")]),
+// const JSXheading= <h1 className="head">React using JSX</h1>
 
-        React.createElement("div", { id: "SecondChild" }, [
-            React.createElement("h2", {}, "first h1 tag"),
-            React.createElement("h3", {}, "first h2 tag")])
-            
-   
+const Title = ()=>{
+    return <h1 className="title">React Component</h1>
+}
 
-        
-      ]);
+console.log(Title);
 
-
-// console.log(parent);
+//composition component
+const HeadingComponent =()=>{
+    return(
+        <div className="container">
+        <Title />
+        <h1 className="heading">React Composition component</h1>
+    </div>
+    );
+    
+}
 
 var root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(parent)
+root.render(<HeadingComponent />);
+
