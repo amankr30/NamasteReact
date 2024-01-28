@@ -14,7 +14,7 @@ const FoodCard = (props) => {
       
     } = resData?.info;
   
-    const {deliveryTime}=sla;
+    
   
     return (
       <div className="foodcard">
@@ -36,7 +36,7 @@ const FoodCard = (props) => {
           <div className="rating-price-dlvtime">
             <p className="rating">{avgRating} ⭐</p>
             <p className="price">{costForTwo}</p>
-            <p className="dlvtime">{deliveryTime} mins</p>
+            <p className="dlvtime">{sla.deliveryTime} mins</p>
           </div>
         </div>
       </div>

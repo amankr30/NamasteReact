@@ -4,7 +4,7 @@ import Shimmer from "./Shimmer";
 
 const Body = () => {
   const [listofres, setListOfRes] = useState([]);
-  const [filteredres, setfilteredres]= useState([]);
+  const [filteredres, setfilteredres] = useState([]);
   const [searchfood, setSearchFood] = useState("");
 
   useEffect(() => {
@@ -13,19 +13,24 @@ const Body = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.6932429&lng=88.37925919999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.5753931&lng=88.47979029999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
 
     const json = await data.json();
-    console.log(json);
+   
     //optional Chaining
-    setListOfRes(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-    setfilteredres(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    setListOfRes(
+      json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
+    setfilteredres(
+      json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
   };
 
 
-
-  return listofres.length === 0 ?( <Shimmer />): (
+  return listofres.length === 0 ? (
+    <Shimmer />
+  ) : (
     <div className="body">
       <div className="search">
         <input
@@ -38,15 +43,18 @@ const Body = () => {
         ></input>
         <button
           onClick={() => {
-            console.log(listofres)
-            const filteredfood = listofres.filter((res) => 
-              
-            res?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants?.info?.name?.toLowerCase(). includes(searchfood.toLowerCase())
+            console.log(listofres);
+            const filteredfood = listofres.filter((res) =>
+              res?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants?.info?.name
+                ?.toLowerCase()
+                .includes(searchfood.toLowerCase())
             );
-            console.log(filteredfood)
+            console.log(filteredfood);
             setfilteredres(filteredfood);
           }}
-        >Search</button>
+        >
+          Search
+        </button>
         <button
           onClick={() => {
             const filterRes = listofres.filter(
@@ -61,8 +69,8 @@ const Body = () => {
       </div>
 
       <div className="res-container">
-        {filteredres.map((info, index) => (
-          <FoodCard key={index} resData={info} />
+        {filteredres.map((restaurants) => (
+          <FoodCard key={restaurants.info.id} resData={restaurants} />
         ))}
       </div>
     </div>
