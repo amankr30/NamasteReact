@@ -13,18 +13,22 @@ const Body = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.5753931&lng=88.47979029999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.6992244&lng=88.3788627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
 
     const json = await data.json();
    
     //optional Chaining
     setListOfRes(
-      json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
     setfilteredres(
-      json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
+
+    // console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants?.info?.name)
+    // console.log(listofres);
+
   };
 
 
@@ -41,15 +45,19 @@ const Body = () => {
             setSearchFood(e.target.value);
           }}
         ></input>
+        
         <button
           onClick={() => {
             console.log(listofres);
             const filteredfood = listofres.filter((res) =>
-              res?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants?.info?.name
+              res?.info?.name
                 ?.toLowerCase()
                 .includes(searchfood.toLowerCase())
+
+                
             );
-            console.log(filteredfood);
+            
+            // console.log(filteredfood);
             setfilteredres(filteredfood);
           }}
         >
@@ -57,8 +65,9 @@ const Body = () => {
         </button>
         <button
           onClick={() => {
+            // console.log("clicked")
             const filterRes = listofres.filter(
-              (res) => res.info.avgRating >= 4.5
+              (res) => res.info.avgRating >= 4.8
             );
 
             setListOfRes(filterRes);

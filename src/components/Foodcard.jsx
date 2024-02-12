@@ -29,7 +29,7 @@ const FoodCard = (props) => {
         <div className="details">
           <div className="foodaddress">
             <h4 className="restname">{name}</h4>
-            <p className="cuisines">{cuisines.join(",")}</p>
+            <p className="cuisines">{cuisines.slice(0, 2).join(",")}...</p>
             <p className="location"> {areaName}</p>
           </div>
   
