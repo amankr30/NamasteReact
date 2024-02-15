@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import FoodCard from "./Foodcard";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
+import useRestaurantList from "../utils/useRestaurantList";
 
 const Body = () => {
+  
+  const [searchfood, setSearchFood] = useState("");
+ 
+  
   const [listofres, setListOfRes] = useState([]);
   const [filteredres, setfilteredres] = useState([]);
-  const [searchfood, setSearchFood] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -13,24 +19,34 @@ const Body = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.6992244&lng=88.3788627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.5562163&lng=88.37238099999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
 
     const json = await data.json();
-   
+
     //optional Chaining
     setListOfRes(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
     setfilteredres(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
 
     // console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants?.info?.name)
     // console.log(listofres);
-
   };
 
+
+
+  const onlineStatus = useOnlineStatus();
+
+  if (onlineStatus === false) {
+    return (
+      <h1>
+        Looks like you are offline!!! Please check your internet connection
+      </h1>
+    );
+  }
 
   return listofres.length === 0 ? (
     <Shimmer />
@@ -45,18 +61,14 @@ const Body = () => {
             setSearchFood(e.target.value);
           }}
         ></input>
-        
+
         <button
           onClick={() => {
             console.log(listofres);
             const filteredfood = listofres.filter((res) =>
-              res?.info?.name
-                ?.toLowerCase()
-                .includes(searchfood.toLowerCase())
-
-                
+              res?.info?.name?.toLowerCase().includes(searchfood.toLowerCase())
             );
-            
+
             // console.log(filteredfood);
             setfilteredres(filteredfood);
           }}
@@ -79,7 +91,12 @@ const Body = () => {
 
       <div className="res-container">
         {filteredres.map((restaurants) => (
-          <FoodCard key={restaurants.info.id} resData={restaurants} />
+          <Link
+            key={restaurants.info.id}
+            to={"/restaurant/" + restaurants.info.id}
+          >
+            <FoodCard resData={restaurants} />
+          </Link>
         ))}
       </div>
     </div>

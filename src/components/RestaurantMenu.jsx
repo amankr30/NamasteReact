@@ -1,21 +1,11 @@
-import { useEffect, useState } from "react";
-import { MENU_URL } from "../utils/constants";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
 import Shimmer from "./Shimmer";
+import {useParams } from "react-router-dom";
 
 const RestaurantMenu = () => {
-  const [resinfo, setResInfo] = useState(null);
+  const { resId } = useParams();
 
-  useEffect(() => {
-    fetchResMenu();
-  }, []);
-
-  const fetchResMenu = async () => {
-    const data = await fetch(MENU_URL);
-
-    const json = await data.json();
-    // console.log(json)
-    setResInfo(json);
-  };
+  const resinfo = useRestaurantMenu(resId);
 
   if (resinfo === null) {
     return <Shimmer />;
@@ -37,7 +27,7 @@ const RestaurantMenu = () => {
   const menucard =
     resinfo.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards[1].card.card
       .itemCards;
-  console.log(menucard);
+  // console.log(menucard);
 
   return (
     <div className="container">
@@ -75,13 +65,12 @@ const RestaurantMenu = () => {
       <hr />
 
       <div className="recommended">
-        {menucard.map((item) => 
-          <div className="fooditem">
+        {menucard.map((item) => (
+          <div className="fooditem" key={item.card.info.id}>
             <h3>{item.card.info.name}</h3>
-            <p>Rs{item.card.info.price/100}</p>
-           
+            <p>Rs{item.card.info.price / 100}</p>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
