@@ -35,4 +35,18 @@ const FoodCard = (props) => {
   );
 };
 
+//Higher Order function
+
+export const PromotedlLabel=(FoodCard)=>{
+  return (props)=>{
+    return(
+      <div>
+       <label>Promoted</label>
+       <FoodCard {...props} />
+      </div>
+    )
+  }
+}
+
+
 export default FoodCard;

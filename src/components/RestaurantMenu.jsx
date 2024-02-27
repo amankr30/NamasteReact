@@ -1,9 +1,14 @@
 import useRestaurantMenu from "../utils/useRestaurantMenu";
+import FoodCategory from "./FoodCategory";
+import FoodLists from "./FoodLists";
 import Shimmer from "./Shimmer";
-import {useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
+
+  const [expandItems, setExpandItems] = useState(null);
 
   const resinfo = useRestaurantMenu(resId);
 
@@ -19,18 +24,27 @@ const RestaurantMenu = () => {
     avgRatingString,
     totalRatingsString,
     nearestOutletNudge,
-  } = resinfo?.data?.cards[0]?.card?.card?.info;
+  } = resinfo?.data?.cards[2]?.card?.card?.info;
 
   const deliveryTime =
     nearestOutletNudge?.nearestOutletInfo?.siblingOutlet?.sla?.deliveryTime;
 
   const menucard =
-    resinfo.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards[1].card.card
+    resinfo.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards[1].card.card
       .itemCards;
   // console.log(menucard);
 
+  const categories =
+    resinfo?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter(
+      (c) =>
+        c.card?.card?.["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
+
+  // console.log(categories);
+
   return (
-    <div className="container">
+    <div className="container ">
       <div className="first">
         <div className="left">
           <div className="resname">
@@ -64,12 +78,14 @@ const RestaurantMenu = () => {
 
       <hr />
 
-      <div className="recommended">
-        {menucard.map((item) => (
-          <div className="fooditem" key={item.card.info.id}>
-            <h3>{item.card.info.name}</h3>
-            <p>Rs{item.card.info.price / 100}</p>
-          </div>
+      <div className="foodcategories mx-auto ">
+        {categories.map((item, index) => (
+          <FoodCategory
+            key={item?.card?.card?.title}
+            data={item?.card?.card}
+            showItems={index === expandItems ? true : false}
+            setExpandItems={() => setExpandItems(index)}
+          />
         ))}
       </div>
     </div>

@@ -1,25 +1,26 @@
-import { useEffect, useState } from "react";
-import FoodCard from "./Foodcard";
+import { useEffect, useState, useContext } from "react";
+import FoodCard, { PromotedlLabel } from "./Foodcard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
-
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
-  
   const [searchfood, setSearchFood] = useState("");
- 
-  
+
+  const FoodcardPromoted = PromotedlLabel(FoodCard);
+
   const [listofres, setListOfRes] = useState([]);
   const [filteredres, setfilteredres] = useState([]);
 
+  const { setUserName, loggedInUser } = useContext(UserContext);
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.5562163&lng=88.37238099999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.6932429&lng=88.37925919999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
 
     const json = await data.json();
@@ -35,8 +36,6 @@ const Body = () => {
     // console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants?.info?.name)
     // console.log(listofres);
   };
-
-
 
   const onlineStatus = useOnlineStatus();
 
@@ -87,6 +86,14 @@ const Body = () => {
         >
           Filter With Highest Rating
         </button>
+        <input
+          className="p-1"
+          type="text"
+          value={loggedInUser}
+          onChange={(e) => {
+            setUserName(e.target.value);
+          }}
+        />
       </div>
 
       <div className="res-container">
@@ -95,7 +102,11 @@ const Body = () => {
             key={restaurants.info.id}
             to={"/restaurant/" + restaurants.info.id}
           >
-            <FoodCard resData={restaurants} />
+            {restaurants.info.promoted ? (
+              <FoodcardPromoted resData={restaurants} />
+            ) : (
+              <FoodCard resData={restaurants} />
+            )}
           </Link>
         ))}
       </div>
