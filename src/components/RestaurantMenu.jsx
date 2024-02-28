@@ -24,18 +24,20 @@ const RestaurantMenu = () => {
     avgRatingString,
     totalRatingsString,
     nearestOutletNudge,
-  } = resinfo?.data?.cards[2]?.card?.card?.info;
+  } = resinfo?.data?.cards[0]?.card?.card?.info;
+
+  console.log(resinfo?.data?.cards[0]?.card?.card?.info)
 
   const deliveryTime =
     nearestOutletNudge?.nearestOutletInfo?.siblingOutlet?.sla?.deliveryTime;
 
   const menucard =
-    resinfo.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards[1].card.card
+    resinfo.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards[1].card.card
       .itemCards;
   // console.log(menucard);
 
   const categories =
-    resinfo?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter(
+    resinfo?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter(
       (c) =>
         c.card?.card?.["@type"] ===
         "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"

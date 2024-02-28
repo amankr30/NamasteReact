@@ -7,6 +7,7 @@ const FoodLists = ({ items }) => {
 
   const handleAddItem = (item) => {
     dispatch(addItem(item));
+    localStorage.setItem(item.card.info.id, JSON.stringify(item));
   };
 
   return (
@@ -28,12 +29,12 @@ const FoodLists = ({ items }) => {
           <div className="w-[150px] py-1">
             <div className=" absolute ">
               <button
-                className="bg-black text-white px-2 py-1 mx-12 my-20 rounded-lg"
+                className="bg-black text-white px-2 py-1 mx-12  rounded-lg"
                 
                 onClick={()=>{handleAddItem(item)}}
                 
               >
-                Add
+                Add +
               </button>
             </div>
 
