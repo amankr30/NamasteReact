@@ -7,7 +7,6 @@ const FoodLists = ({ items }) => {
 
   const handleAddItem = (item) => {
     dispatch(addItem(item));
-    localStorage.setItem(item.card.info.id, JSON.stringify(item));
   };
 
   return (

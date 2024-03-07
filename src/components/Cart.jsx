@@ -1,11 +1,29 @@
 import { clearCart, removeItem } from "../utils/CartSlice";
 import FoodLists from "./FoodLists";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
 const Cart = () => {
   const CartItems = useSelector((store) => store.Cart.items);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      // If local storage changes, clear the cart and reload items
+      dispatch(clearCart());
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [dispatch]);
+
+
+
+
 
   const handleRemoveItem = () => {
     dispatch(clearCart());
